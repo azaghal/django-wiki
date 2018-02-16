@@ -1,6 +1,9 @@
+from django.apps import apps
+from django.contrib.auth.models import Group as AuthGroup
+
 from django.test import TestCase
 from wiki.conf import settings as wiki_settings
-from wiki.forms import Group
+from wiki.forms import Group as WikiGroup
 from wiki.models import URLPath
 
 from ..base import wiki_override_settings
@@ -19,10 +22,12 @@ class URLPathTests(TestCase):
 
 
 class CustomGroupTests(TestCase):
-    @wiki_override_settings(WIKI_GROUP_MODEL='auth.Group')
     def test_setting(self):
+        self.assertEqual(WikiGroup, AuthGroup)
         self.assertEqual(wiki_settings.GROUP_MODEL, 'auth.Group')
 
+    @wiki_override_settings(WIKI_GROUP_MODEL='testdata.CustomGroup')
     def test_custom(self):
+        Group = apps.get_model(wiki_settings.GROUP_MODEL)
         self.assertEqual(Group, CustomGroup)
         self.assertEqual(wiki_settings.GROUP_MODEL, 'testdata.CustomGroup')

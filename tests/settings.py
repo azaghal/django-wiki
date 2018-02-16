@@ -14,7 +14,13 @@ DATABASES = {
 
 DEBUG = True
 AUTH_USER_MODEL = 'testdata.CustomUser'
-WIKI_GROUP_MODEL = 'testdata.CustomGroup'
+# @TODO: This has potential to break a number of tests. Technically,
+# Django does _not_ support custom group models, and anything trying
+# to implement it is basically a hack that may or may not work with
+# the rest of the system. It might be smarter to completely do away
+# with this setting, unless somebody adds extensive docs on how to
+# make the custom group model work with Django and Django Wiki.
+# WIKI_GROUP_MODEL = 'testdata.CustomGroup'
 SITE_ID = 1
 ROOT_URLCONF = 'tests.testdata.urls'
 INSTALLED_APPS = [
